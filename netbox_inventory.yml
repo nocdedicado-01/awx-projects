@@ -1,0 +1,8 @@
+---
+plugin: netbox.netbox.nb_inventory
+api_endpoint: http://10.0.0.26:8080
+validate_certs: false
+config_context: true
+group_by:
+  - device_roles
+  - sites
