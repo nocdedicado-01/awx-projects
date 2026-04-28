@@ -1,19 +1,21 @@
 ---
-- name: "Sincronizar Dispositivos de NetBox a Zabbix"
+- name: "Sincronizar NetBox a Zabbix"
   hosts: all
   gather_facts: false
+  connection: local
 
   tasks:
-    - name: "Crear el host en Zabbix"
+    - name: "Crear Host en Zabbix"
       community.zabbix.zabbix_host:
-        # En esta versión, intentamos usar el nombre directo del parámetro de la API
-        zabbix_url: "http://10.0.0.23/api_jsonrpc.php"
+        # Tu IP de Zabbix ya configurada
+        server_url: "http://10.0.0.23/zabbix/api_jsonrpc.php"
+        # Usamos el Token que creamos en AWX
         http_login_password: "{{ zabbix_api_token }}"
         host_name: "{{ inventory_hostname }}"
         visible_name: "{{ inventory_hostname }}"
         status: enabled
         interfaces:
-          - type: 2 
+          - type: 2 # SNMP
             main: 1
             useip: 1
             ip: "{{ ansible_host }}"
@@ -23,9 +25,4 @@
         link_templates:
           - "Huawei CloudEngine SNMP"
       delegate_to: localhost
-      # Si zabbix_url sigue fallando, la colección espera que la URL 
-      # se pase como una variable de entorno o directamente en la configuración del módulo.
-      vars:
-        ansible_zabbix_url: "http://TU_IP_ZABBIX/api_jsonrpc.php"
-        ansible_zabbix_auth_key: "{{ zabbix_api_token }}"
       when: ansible_host is defined
