@@ -1,0 +1,27 @@
+---
+- name: "Sincronizar Dispositivos de NetBox a Zabbix"
+  hosts: all
+  gather_facts: false
+  connection: local
+
+  tasks:
+    - name: "Crear el host en Zabbix"
+      community.zabbix.zabbix_host:
+        server_url: "http://TU_IP_ZABBIX/api_jsonrpc.php"
+        login_user: "Admin"
+        login_password: "TU_PASSWORD_ZABBIX"
+        host_name: "{{ inventory_hostname }}"
+        visible_name: "{{ inventory_hostname }}"
+        status: enabled
+        interfaces:
+          - type: 2 # 2 significa SNMP
+            main: 1
+            useip: 1
+            ip: "{{ ansible_host }}"
+            dns: ""
+            port: "161"
+        groups:
+          - "Switches Uruguay"
+        templates:
+          - "Huawei CloudEngine SNMP" # Asegúrate que este nombre sea igual en tu Zabbix
+      when: primary_ip4 is defined
