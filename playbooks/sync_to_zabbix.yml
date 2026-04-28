@@ -7,15 +7,14 @@
   tasks:
     - name: "Crear Host en Zabbix"
       community.zabbix.zabbix_host:
-        # Tu IP de Zabbix ya configurada
+        # URL con la ruta /zabbix incluida
         server_url: "http://10.0.0.23/zabbix/api_jsonrpc.php"
-        # Usamos el Token que creamos en AWX
         http_login_password: "{{ zabbix_api_token }}"
         host_name: "{{ inventory_hostname }}"
         visible_name: "{{ inventory_hostname }}"
         status: enabled
         interfaces:
-          - type: 2 # SNMP
+          - type: 2
             main: 1
             useip: 1
             ip: "{{ ansible_host }}"
