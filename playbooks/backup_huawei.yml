@@ -3,6 +3,8 @@
   hosts: all
   gather_facts: no
   connection: ansible.netcommon.network_cli
+  collections:
+    - community.network
 
   tasks:
     - name: "Obtener configuracion actual del switch"
