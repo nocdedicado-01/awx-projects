@@ -1,0 +1,17 @@
+---
+- name: "Backup Huawei via AWX"
+  hosts: all
+  gather_facts: no
+  connection: ansible.netcommon.network_cli
+
+  tasks:
+    - name: "Obtener configuracion actual del switch"
+      community.network.vrp_command:
+        commands: 
+          - screen-length 0 temporary
+          - display current-configuration
+      register: backup_raw
+
+    - name: "Mostrar el backup en el log de AWX"
+      debug:
+        msg: "{{ backup_raw.stdout[1] }}"
