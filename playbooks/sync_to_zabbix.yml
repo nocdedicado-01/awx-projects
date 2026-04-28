@@ -7,7 +7,7 @@
     - name: "Crear el host en Zabbix"
       community.zabbix.zabbix_host:
         # En esta versión, intentamos usar el nombre directo del parámetro de la API
-        zabbix_url: "http://10.0.0.23/zabbix/api_jsonrpc.php"
+        zabbix_url: "http://10.0.0.23/api_jsonrpc.php"
         http_login_password: "{{ zabbix_api_token }}"
         host_name: "{{ inventory_hostname }}"
         visible_name: "{{ inventory_hostname }}"
