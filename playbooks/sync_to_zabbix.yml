@@ -6,9 +6,8 @@
   tasks:
     - name: "Crear el host en Zabbix"
       community.zabbix.zabbix_host:
-        # Volvemos a server_url según tu lista de parámetros soportados
-        server_url: "http://TU_IP_ZABBIX/api_jsonrpc.php"
-        # Usamos el token en el campo de password (truco común en estas versiones)
+        # En esta versión, intentamos usar el nombre directo del parámetro de la API
+        zabbix_url: "http://10.0.0.23/zabbix/api_jsonrpc.php"
         http_login_password: "{{ zabbix_api_token }}"
         host_name: "{{ inventory_hostname }}"
         visible_name: "{{ inventory_hostname }}"
@@ -24,4 +23,9 @@
         link_templates:
           - "Huawei CloudEngine SNMP"
       delegate_to: localhost
+      # Si zabbix_url sigue fallando, la colección espera que la URL 
+      # se pase como una variable de entorno o directamente en la configuración del módulo.
+      vars:
+        ansible_zabbix_url: "http://TU_IP_ZABBIX/api_jsonrpc.php"
+        ansible_zabbix_auth_key: "{{ zabbix_api_token }}"
       when: ansible_host is defined
