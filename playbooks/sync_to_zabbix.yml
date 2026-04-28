@@ -7,7 +7,6 @@
   tasks:
     - name: "Crear Host en Zabbix"
       community.zabbix.zabbix_host:
-        # URL con la ruta /zabbix incluida
         server_url: "http://10.0.0.23/zabbix/api_jsonrpc.php"
         http_login_password: "{{ zabbix_api_token }}"
         host_name: "{{ inventory_hostname }}"
@@ -22,6 +21,6 @@
         host_groups:
           - "Switches Uruguay"
         link_templates:
-          - "Huawei CloudEngine SNMP"
+          - "Huawei VRP by SNMP"
       delegate_to: localhost
       when: ansible_host is defined
