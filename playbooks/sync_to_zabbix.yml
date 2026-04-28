@@ -7,8 +7,7 @@
   tasks:
     - name: "Crear Host en Zabbix"
       community.zabbix.zabbix_host:
-        server_url: "http://10.0.0.23/zabbix/api_jsonrpc.php"
-        http_login_password: "{{ zabbix_api_token }}"
+        # Solo dejamos los datos del host, nada de conexión aquí
         host_name: "{{ inventory_hostname }}"
         visible_name: "{{ inventory_hostname }}"
         status: enabled
@@ -22,5 +21,9 @@
           - "Switches Uruguay"
         link_templates:
           - "Huawei VRP by SNMP"
+      # Aquí inyectamos los datos de conexión con los nombres mágicos de Ansible
+      vars:
+        ansible_zabbix_url: "http://10.0.0.23/zabbix/api_jsonrpc.php"
+        ansible_zabbix_auth_key: "{{ zabbix_api_token }}"
       delegate_to: localhost
       when: ansible_host is defined
