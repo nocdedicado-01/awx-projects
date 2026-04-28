@@ -7,10 +7,8 @@
   tasks:
     - name: "Crear Host en Zabbix"
       community.zabbix.zabbix_host:
-        # Parámetros obligatorios de conexión según tus logs:
-        server_url: "http://10.0.0.23/zabbix/api_jsonrpc.php"
-        http_login_password: "{{ zabbix_api_token }}"
-        # Datos del Switch:
+        # Usamos los nombres exactos que aparecen en tu lista de "Supported parameters"
+        http_login_user: "{{ zabbix_api_token }}"
         host_name: "{{ inventory_hostname }}"
         visible_name: "{{ inventory_hostname }}"
         status: enabled
@@ -24,5 +22,8 @@
           - "Switches Uruguay"
         link_templates:
           - "Huawei VRP by SNMP"
+      vars:
+        # Pasamos la URL como variable de host para que el módulo la tome internamente
+        ansible_zabbix_url: "http://10.0.0.23/zabbix/api_jsonrpc.php"
       delegate_to: localhost
       when: ansible_host is defined
