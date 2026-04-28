@@ -6,10 +6,10 @@
   tasks:
     - name: "Crear el host en Zabbix"
       community.zabbix.zabbix_host:
-        # Cambio de server_url a zabbix_url
-        zabbix_url: "http://TU_IP_ZABBIX/api_jsonrpc.php"
-        # Usamos el token de la credencial de AWX
-        ansible_zabbix_auth_key: "{{ zabbix_api_token }}"
+        # Volvemos a server_url según tu lista de parámetros soportados
+        server_url: "http://TU_IP_ZABBIX/api_jsonrpc.php"
+        # Usamos el token en el campo de password (truco común en estas versiones)
+        http_login_password: "{{ zabbix_api_token }}"
         host_name: "{{ inventory_hostname }}"
         visible_name: "{{ inventory_hostname }}"
         status: enabled
@@ -19,10 +19,8 @@
             useip: 1
             ip: "{{ ansible_host }}"
             port: "161"
-        # Cambio de groups a host_groups
         host_groups:
           - "Switches Uruguay"
-        # Cambio de templates a link_templates
         link_templates:
           - "Huawei CloudEngine SNMP"
       delegate_to: localhost
