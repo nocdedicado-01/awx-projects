@@ -2,3 +2,4 @@
 collections:
   - name: community.network
   - name: huawei.vrp
+  - name: ansible.netcommon
