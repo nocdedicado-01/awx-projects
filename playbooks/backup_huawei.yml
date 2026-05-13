@@ -3,17 +3,21 @@
   hosts: all
   gather_facts: no
   connection: ansible.netcommon.network_cli
+  vars:
+    ansible_network_os: community.network.vrp
   collections:
-    - huawei.vrp
     - ansible.netcommon
+    - community.network
   tasks:
+    - name: "Deshabilitar paginacion"
+      ansible.netcommon.cli_command:
+        command: screen-length 0 temporary
+
     - name: "Obtener configuracion actual del switch"
-      huawei.vrp.vrp_command:
-        commands:
-          - screen-length 0 temporary
-          - display current-configuration
+      ansible.netcommon.cli_command:
+        command: display current-configuration
       register: backup_raw
 
     - name: "Mostrar el backup en el log de AWX"
       debug:
-        msg: "{{ backup_raw.stdout[1] }}"
+        msg: "{{ backup_raw.stdout }}"
