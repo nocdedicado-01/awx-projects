@@ -2,24 +2,24 @@
 - name: "Backup Huawei via AWX"
   hosts: all
   gather_facts: no
-  connection: ansible.netcommon.network_cli
-  vars:
-    ansible_network_os: community.network.vrp
-    ansible_connection: ansible.netcommon.network_cli
-    ansible_port: 23
+  connection: local
   collections:
     - ansible.netcommon
-    - community.network
   tasks:
-    - name: "Deshabilitar paginacion"
-      ansible.netcommon.cli_command:
-        command: screen-length 0 temporary
-
     - name: "Obtener configuracion actual del switch"
-      ansible.netcommon.cli_command:
-        command: display current-configuration
+      ansible.netcommon.telnet:
+        host: "{{ ansible_host }}"
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        login_prompt: "Username:"
+        password_prompt: "Password:"
+        prompts:
+          - "[>|#]"
+        command:
+          - screen-length 0 temporary
+          - display current-configuration
       register: backup_raw
 
     - name: "Mostrar el backup en el log de AWX"
       debug:
-        msg: "{{ backup_raw.stdout }}"
+        msg: "{{ backup_raw.output }}"
