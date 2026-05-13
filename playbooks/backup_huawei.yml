@@ -4,12 +4,12 @@
   gather_facts: no
   connection: ansible.netcommon.network_cli
   collections:
-    - community.network
-
+    - huawei.vrp
+    - ansible.netcommon
   tasks:
     - name: "Obtener configuracion actual del switch"
-      community.network.vrp_command:
-        commands: 
+      huawei.vrp.vrp_command:
+        commands:
           - screen-length 0 temporary
           - display current-configuration
       register: backup_raw
