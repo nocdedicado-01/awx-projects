@@ -5,7 +5,8 @@
   connection: ansible.netcommon.network_cli
   vars:
     ansible_network_os: community.network.vrp
-    ansible_ssh_common_args: '-o KexAlgorithms=+diffie-hellman-group1-sha1,diffie-hellman-group14-sha1 -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa'
+    ansible_connection: ansible.netcommon.network_cli
+    ansible_port: 23
   collections:
     - ansible.netcommon
     - community.network
