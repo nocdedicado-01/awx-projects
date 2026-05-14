@@ -18,8 +18,18 @@
         command:
           - screen-length 0 temporary
           - display current-configuration
+        timeout: 30
       register: backup_raw
+      ignore_errors: yes
 
-    - name: "Mostrar el backup en el log de AWX"
+    - name: "Mostrar backup del primer switch"
       debug:
         msg: "{{ backup_raw.output }}"
+      when: 
+        - backup_raw.output is defined
+        - inventory_hostname == ansible_play_hosts[0]
+
+    - name: "Confirmar switches que fallaron"
+      debug:
+        msg: "FALLO la conexion a {{ inventory_hostname }}"
+      when: backup_raw.failed is defined and backup_raw.failed
