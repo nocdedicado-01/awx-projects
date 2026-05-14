@@ -22,12 +22,13 @@
       register: backup_raw
       ignore_errors: yes
 
-    - name: "Mostrar backup del primer switch"
+    - name: "Mostrar backup del primer switch exitoso"
       debug:
         msg: "{{ backup_raw.output }}"
-      when: 
+      when:
         - backup_raw.output is defined
-        - inventory_hostname == ansible_play_hosts[0]
+        - not backup_raw.failed
+      run_once: yes
 
     - name: "Confirmar switches que fallaron"
       debug:
