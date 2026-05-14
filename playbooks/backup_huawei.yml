@@ -27,8 +27,9 @@
         msg: "{{ backup_raw.output }}"
       when:
         - backup_raw.output is defined
-        - not backup_raw.failed
-      run_once: yes
+        - backup_raw.failed is not defined or not backup_raw.failed
+        - inventory_hostname == "AR0100_ASW1"
+      
 
     - name: "Confirmar switches que fallaron"
       debug:
