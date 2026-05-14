@@ -22,13 +22,10 @@
       register: backup_raw
       ignore_errors: yes
 
-    - name: "Mostrar backup del primer switch exitoso"
+    - name: "Ver estructura del resultado"
       debug:
-        msg: "{{ backup_raw.output }}"
-      when:
-        - backup_raw.output is defined
-        - backup_raw.failed is not defined or not backup_raw.failed
-        - inventory_hostname == "AR0100_ASW1"
+        var: backup_raw
+      when: inventory_hostname == "AR0100_ASW1"
       
 
     - name: "Confirmar switches que fallaron"
